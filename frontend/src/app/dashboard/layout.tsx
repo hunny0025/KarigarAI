@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar - Styled like an editorial column */}
       <aside className={`fixed lg:sticky top-0 left-0 z-40 h-screen w-80 bg-inherit border-r border-[var(--color-sand)] flex flex-col transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} overflow-hidden`}>
         <ArtisanOverlay 
-          imagePath="/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/wood_carving_artisan_1773414403971.png" 
+          imagePath="/wood-artisan.png" 
           opacity="opacity-5"
           className="grayscale saturate-0"
         />

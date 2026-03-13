@@ -23,19 +23,19 @@
 
 /* Custom background patterns and textures */
 @utility bg-canvas {
-  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/aged_parchment_texture_1773412066566.png');
+  background-image: url('/parchment.png');
   background-size: cover;
   background-repeat: repeat;
 }
 
 @utility bg-silk {
-  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/banarasi_silk_pattern_1773415650858.png');
+  background-image: url('/silk.png');
   background-size: cover;
   background-position: center;
 }
 
 @utility bg-haveli {
-  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/haveli_architecture_bg_1773415692111.png');
+  background-image: url('/haveli.png');
   background-size: cover;
   background-position: center;
 }

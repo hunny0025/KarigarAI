@@ -80,7 +80,7 @@ export default function DashboardPage() {
         <div className="lg:col-span-2">
            <CanvasBorder className="min-h-[500px] bg-white/20 overflow-hidden group">
               <ArtisanOverlay 
-                imagePath="/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/artisan_pottery_background_1773414269361.png" 
+                imagePath="/pottery-bg.png" 
                 opacity="opacity-0 group-hover:opacity-5"
                 className="transition-opacity duration-1000"
               />
@@ -138,7 +138,7 @@ export default function DashboardPage() {
 
            <div className="p-8 border border-[var(--color-sand)] relative overflow-hidden group hover:border-[var(--color-terracotta)] transition-colors min-h-[220px]">
               <ArtisanOverlay 
-                imagePath="/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/brass_artifact_detail_1773414371858.png" 
+                imagePath="/brass-detail.png" 
                 opacity="opacity-10 group-hover:opacity-20"
                 className="saturate-0 mix-blend-multiply"
               />
