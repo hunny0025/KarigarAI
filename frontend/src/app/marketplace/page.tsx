@@ -1,14 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, ChevronDown, Grid3X3, LayoutList } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
-import { products, craftCategories, regions, materials } from '@/lib/data';
+import { craftCategories, regions, materials, Product } from '@/lib/data';
 
 type SortOption = 'newest' | 'price-low' | 'price-high' | 'popular' | 'rating';
 
 export default function MarketplacePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedRegion, setSelectedRegion] = useState<string>('');
@@ -17,6 +19,20 @@ export default function MarketplacePage() {
   const [sort, setSort] = useState<SortOption>('newest');
   const [showFilters, setShowFilters] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    // Fetch live products from the deployed Render backend
+    fetch('https://karigarai-push.onrender.com/api/products/')
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data.products || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch API", err);
+        setLoading(false);
+      });
+  }, []);
 
   const filtered = useMemo(() => {
     let result = [...products];
@@ -57,6 +73,18 @@ export default function MarketplacePage() {
 
   const activeFilterCount = [selectedCategory, selectedRegion, selectedMaterial].filter(Boolean).length +
     (priceRange[0] > 0 || priceRange[1] < 50000 ? 1 : 0);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[var(--color-ivory)] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[var(--color-sand)] border-t-[var(--color-saffron)] rounded-full animate-spin mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-[var(--color-charcoal)] font-[family-name:var(--font-heading)]">Connecting to the Studio...</h2>
+          <p className="text-[var(--color-warm-gray)] mt-2">Fetching live artisanal treasures</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[var(--color-ivory)]">
