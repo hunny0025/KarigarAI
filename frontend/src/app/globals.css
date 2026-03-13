@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary Palette */
+  --color-saffron: #E8772E;
+  --color-saffron-light: #F5A623;
+  --color-saffron-dark: #C75D1A;
+  --color-terracotta: #C4573A;
+  --color-terracotta-light: #D4745C;
+  --color-terracotta-dark: #A3422A;
+  --color-indigo: #2C3E7B;
+  --color-indigo-light: #4A5FA0;
+  --color-indigo-dark: #1E2C5A;
+
+  /* Secondary Palette */
+  --color-sand: #E8DCC8;
+  --color-sand-light: #F5EDE0;
+  --color-sand-dark: #D4C4A8;
+  --color-ivory: #FDF8F0;
+  --color-ivory-dark: #F5EDE0;
+  --color-gold: #B8953F;
+  --color-gold-light: #D4B15C;
+  --color-gold-dark: #8A6E2F;
+
+  /* Neutrals */
+  --color-charcoal: #2D2926;
+  --color-warm-gray: #6B6560;
+  --color-light-gray: #B5AFA6;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing */
+  --spacing-section: 6rem;
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-charcoal);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ivory);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sand-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-warm-gray);
+}
+
+/* Utility classes */
+.text-gradient-saffron {
+  background: linear-gradient(135deg, var(--color-saffron), var(--color-terracotta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-indigo {
+  background: linear-gradient(135deg, var(--color-indigo), var(--color-indigo-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-pattern-dots {
+  background-image: radial-gradient(circle, var(--color-sand-dark) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-pattern-weave {
+  background-image: 
+    linear-gradient(45deg, var(--color-sand) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--color-sand) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--color-sand) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--color-sand) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.bg-pattern-textile {
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 14px, var(--color-sand-dark) 14px, var(--color-sand-dark) 15px),
+    repeating-linear-gradient(90deg, transparent, transparent 14px, var(--color-sand-dark) 14px, var(--color-sand-dark) 15px);
+  opacity: 0.3;
+}
+
+/* Card hover effect */
+.card-craft {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-craft:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(45, 41, 38, 0.12);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(253, 248, 240, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 220, 200, 0.5);
+}
+
+/* Shimmer loading animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.loading-shimmer {
+  background: linear-gradient(90deg, var(--color-sand-light) 25%, var(--color-ivory) 50%, var(--color-sand-light) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Button styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-saffron), var(--color-saffron-dark));
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-saffron-dark), var(--color-terracotta));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(232, 119, 46, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-indigo);
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-indigo);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  background: var(--color-indigo);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Section divider - Indian textile inspired */
+.divider-ornate {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-saffron), var(--color-gold), var(--color-terracotta), transparent);
+  border: none;
+  margin: 3rem auto;
+  width: 60%;
+}
