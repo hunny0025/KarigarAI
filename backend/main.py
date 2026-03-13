@@ -16,7 +16,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://karigarai.vercel.app",
-        "https://frontend-2a9bra8jo-hunny-sharmas-projects-1f58ab4d.vercel.app",
+        "https://karigar-ai.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

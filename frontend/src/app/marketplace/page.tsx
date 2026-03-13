@@ -22,7 +22,7 @@ export default function MarketplacePage() {
 
   useEffect(() => {
     // Fetch live products from the deployed Render backend
-    fetch('https://karigarai-push.onrender.com/api/products/')
+    fetch('https://karigarai.onrender.com/api/products/')
       .then(res => res.json())
       .then(data => {
         setProducts(data.products || []);
