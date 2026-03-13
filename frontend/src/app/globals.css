@@ -1,186 +1,152 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary Palette */
-  --color-saffron: #E8772E;
-  --color-saffron-light: #F5A623;
-  --color-saffron-dark: #C75D1A;
-  --color-terracotta: #C4573A;
-  --color-terracotta-light: #D4745C;
-  --color-terracotta-dark: #A3422A;
-  --color-indigo: #2C3E7B;
-  --color-indigo-light: #4A5FA0;
-  --color-indigo-dark: #1E2C5A;
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
 
-  /* Secondary Palette */
-  --color-sand: #E8DCC8;
-  --color-sand-light: #F5EDE0;
-  --color-sand-dark: #D4C4A8;
-  --color-ivory: #FDF8F0;
-  --color-ivory-dark: #F5EDE0;
-  --color-gold: #B8953F;
-  --color-gold-light: #D4B15C;
-  --color-gold-dark: #8A6E2F;
-
-  /* Neutrals */
-  --color-charcoal: #2D2926;
-  --color-warm-gray: #6B6560;
-  --color-light-gray: #B5AFA6;
-
-  /* Typography */
-  --font-heading: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
-
-  /* Spacing */
-  --spacing-section: 6rem;
+  --color-saffron: #F4C430;
+  --color-saffron-dark: #C19A24;
+  --color-terracotta: #D2691E; /* Richer terracotta from reference */
+  --color-terracotta-dark: #8B4513;
+  --color-indigo: #2E5894;
+  --color-indigo-dark: #1F3B63;
+  --color-gold: #D4AF37;
+  --color-maroon: #800000;
+  
+  --color-ivory: #FCF5E5; /* Warmer parchment tone */
+  --color-sand: #F2E8CF; /* More yellowed sand */
+  --color-sand-light: #F9F4E8;
+  --color-charcoal: #1A1A1A;
+  --color-warm-gray: #5D5C5C;
+  --color-light-gray: #BCB8B1;
 }
 
-/* Base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Custom background patterns and textures */
+@utility bg-canvas {
+  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/aged_parchment_texture_1773412066566.png');
+  background-size: cover;
+  background-repeat: repeat;
+}
+
+@utility bg-silk {
+  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/banarasi_silk_pattern_1773415650858.png');
+  background-size: cover;
+  background-position: center;
+}
+
+@utility bg-haveli {
+  background-image: url('/brain/58b3c799-7564-4ffe-8999-e4c39d322e6f/haveli_architecture_bg_1773415692111.png');
+  background-size: cover;
+  background-position: center;
+}
+
+
+@utility mix-blend-multiply {
+  mix-blend-mode: multiply;
+}
+
+@utility mix-blend-soft-light {
+  mix-blend-mode: soft-light;
+}
+
+@utility artifact-shadow {
+  box-shadow: 0 30px 60px -15px rgba(50, 20, 10, 0.4), 0 10px 30px -5px rgba(50, 20, 10, 0.2);
+}
+
+@utility frame-heavy {
+  border: 12px solid var(--color-charcoal);
+  outline: 2px solid var(--color-gold);
+  outline-offset: -8px;
+}
+
+
+@utility bg-texture-overlay {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+:root {
+  --background: var(--color-ivory);
+  --foreground: var(--color-charcoal);
+  --primary: var(--color-saffron);
+  --secondary: var(--color-terracotta);
+  --accent: var(--color-indigo);
+  --muted: var(--color-warm-gray);
+  --border: var(--color-sand);
 }
 
 body {
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: var(--font-body);
-  background-color: var(--color-ivory);
-  color: var(--color-charcoal);
+  background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  color: var(--color-charcoal);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-/* Scrollbar */
+/* --- Premium Cultural Components --- */
+
+.btn-primary {
+  @apply px-8 py-3.5 rounded-full bg-[var(--color-terracotta)] text-white font-bold transition-all duration-500 shadow-lg hover:shadow-[var(--color-terracotta)]/40 hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-[10px];
+}
+
+.btn-pill {
+  @apply px-6 py-2 rounded-full border border-[var(--color-terracotta)] text-[var(--color-terracotta)] font-bold text-[9px] uppercase tracking-widest transition-all hover:bg-[var(--color-terracotta)] hover:text-white;
+}
+
+.btn-secondary {
+  @apply px-8 py-3.5 rounded-full border-2 border-[var(--color-charcoal)] text-[var(--color-charcoal)] font-bold transition-all duration-500 hover:bg-[var(--color-charcoal)] hover:text-white flex items-center justify-center gap-3 uppercase tracking-widest text-[10px];
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/20;
+}
+
+.card-cultural {
+  @apply bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-[var(--color-sand)] hover:-translate-y-2;
+}
+
+.text-gradient-saffron {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-saffron-dark)] via-[var(--color-terracotta)] to-[var(--color-saffron-dark)];
+}
+
+.divider-rangoli {
+  @apply flex items-center justify-center my-8 text-[var(--color-saffron)] opacity-40;
+  &::before, &::after {
+    content: "";
+    @apply flex-grow border-t border-current mx-4;
+  }
+}
+
+/* Hero Parallax */
+.hero-parallax {
+  @apply relative overflow-hidden;
+  &::after {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-b from-black/0 via-black/20 to-[var(--color-ivory)];
+    z-index: 1;
+  }
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-ivory);
+  @apply bg-[var(--color-sand)];
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-sand-dark);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-warm-gray);
-}
-
-/* Utility classes */
-.text-gradient-saffron {
-  background: linear-gradient(135deg, var(--color-saffron), var(--color-terracotta));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-indigo {
-  background: linear-gradient(135deg, var(--color-indigo), var(--color-indigo-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.bg-pattern-dots {
-  background-image: radial-gradient(circle, var(--color-sand-dark) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.bg-pattern-weave {
-  background-image: 
-    linear-gradient(45deg, var(--color-sand) 25%, transparent 25%),
-    linear-gradient(-45deg, var(--color-sand) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, var(--color-sand) 75%),
-    linear-gradient(-45deg, transparent 75%, var(--color-sand) 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-}
-
-.bg-pattern-textile {
-  background-image: 
-    repeating-linear-gradient(0deg, transparent, transparent 14px, var(--color-sand-dark) 14px, var(--color-sand-dark) 15px),
-    repeating-linear-gradient(90deg, transparent, transparent 14px, var(--color-sand-dark) 14px, var(--color-sand-dark) 15px);
-  opacity: 0.3;
-}
-
-/* Card hover effect */
-.card-craft {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card-craft:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(45, 41, 38, 0.12);
-}
-
-/* Glass effect */
-.glass {
-  background: rgba(253, 248, 240, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(232, 220, 200, 0.5);
-}
-
-/* Shimmer loading animation */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.loading-shimmer {
-  background: linear-gradient(90deg, var(--color-sand-light) 25%, var(--color-ivory) 50%, var(--color-sand-light) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-/* Button styles */
-.btn-primary {
-  background: linear-gradient(135deg, var(--color-saffron), var(--color-saffron-dark));
-  color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.btn-primary:hover {
-  background: linear-gradient(135deg, var(--color-saffron-dark), var(--color-terracotta));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(232, 119, 46, 0.4);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--color-indigo);
-  padding: 0.75rem 2rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  border: 2px solid var(--color-indigo);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.btn-secondary:hover {
-  background: var(--color-indigo);
-  color: white;
-  transform: translateY(-1px);
-}
-
-/* Section divider - Indian textile inspired */
-.divider-ornate {
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--color-saffron), var(--color-gold), var(--color-terracotta), transparent);
-  border: none;
-  margin: 3rem auto;
-  width: 60%;
+  @apply bg-[var(--color-terracotta)] rounded-full border-2 border-[var(--color-sand)];
 }

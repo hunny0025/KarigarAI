@@ -1,13 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import {
   ArrowRight, Sparkles, Shield, Globe, BookOpen, Award, HandHeart,
   MapPin, Star, ChevronRight, Play
 } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import { products, artisans, craftRegions, platformFeatures } from '@/lib/data';
+import { OrnateDivider, TextureOverlay, HaveliFrame } from '@/components/DecorativeElements';
+import IndiaCraftMap from '@/components/IndiaCraftMap';
 
 const iconMap: Record<string, React.ReactNode> = {
   HandHeart: <HandHeart size={28} />,
@@ -28,297 +31,212 @@ const fadeUp: any = {
 };
 
 export default function HomePage() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -150]);
+
   return (
-    <div>
+    <div ref={containerRef} className="relative">
+      <TextureOverlay />
+
       {/* ===== HERO SECTION ===== */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-ivory)] via-[var(--color-sand-light)] to-[var(--color-ivory)]" />
-        <div className="absolute inset-0 bg-pattern-dots opacity-30" />
+      <section className="relative min-h-screen flex items-center overflow-hidden border-b-8 border-[var(--color-charcoal)]">
+        {/* Parallax Background Panels */}
+        <motion.div style={{ y: y1 }} className="absolute inset-0 z-0 bg-silk">
+          <div className="absolute inset-0 bg-[var(--color-charcoal)]/40 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-[var(--color-charcoal)]/60 to-transparent" />
+        </motion.div>
 
-        {/* Decorative circles */}
-        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-gradient-to-br from-[var(--color-saffron)]/10 to-transparent blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-gradient-to-tr from-[var(--color-indigo)]/10 to-transparent blur-3xl" />
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left content */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-saffron)]/10 border border-[var(--color-saffron)]/20 mb-6">
-              <Sparkles size={14} className="text-[var(--color-saffron)]" />
-              <span className="text-xs font-semibold text-[var(--color-saffron)] uppercase tracking-wider">
-                AI-Powered Artisan Marketplace
-              </span>
-            </div>
-
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold font-[family-name:var(--font-heading)] leading-[1.1] mb-6">
-              <span className="text-[var(--color-charcoal)]">Empowering</span>
-              <br />
-              <span className="text-gradient-saffron">Artisans</span>
-              <br />
-              <span className="text-[var(--color-charcoal)]">Through </span>
-              <span className="text-[var(--color-indigo)]">Technology</span>
-            </h1>
-
-            <p className="text-lg text-[var(--color-warm-gray)] leading-relaxed mb-8 max-w-lg">
-              Discover authentic handcrafted treasures from India&apos;s master craftspeople.
-              Every purchase preserves centuries-old traditions and empowers artisan communities.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <Link href="/marketplace" className="btn-primary text-base px-8 py-4">
-                Explore Crafts <ArrowRight size={18} />
-              </Link>
-              <Link href="/join" className="btn-secondary text-base px-8 py-4">
-                Become an Artisan
-              </Link>
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-10 mt-12">
-              {[
-                { value: '2,500+', label: 'Artisans' },
-                { value: '15,000+', label: 'Products' },
-                { value: '12', label: 'States' },
-              ].map((stat) => (
-                <div key={stat.label}>
-                  <div className="text-2xl font-bold text-[var(--color-charcoal)] font-[family-name:var(--font-heading)]">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs text-[var(--color-warm-gray)] uppercase tracking-wider mt-0.5">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Right — craft showcase grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:grid grid-cols-2 gap-4 relative"
-          >
-            <div className="space-y-4">
-              <div className="rounded-2xl overflow-hidden shadow-lg aspect-[3/4]">
-                <img
-                  src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600"
-                  alt="Banarasi Silk Weaving"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                <img
-                  src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600"
-                  alt="Blue Pottery"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="space-y-4 mt-8">
-              <div className="rounded-2xl overflow-hidden shadow-lg aspect-square">
-                <img
-                  src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=600"
-                  alt="Brass Sculpture"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-lg aspect-[3/4]">
-                <img
-                  src="https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=600"
-                  alt="Traditional Painting"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-
-            {/* Floating card */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full pt-20">
+          <div className="max-w-3xl">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-              className="absolute -bottom-4 -left-4 glass rounded-xl p-4 shadow-xl max-w-[200px]"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                  <span className="text-green-600 text-sm">✓</span>
-                </div>
-                <span className="text-xs font-semibold text-[var(--color-charcoal)]">Verified Artisan</span>
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-[var(--color-saffron)]/30 bg-[var(--color-saffron)]/10 backdrop-blur-sm mb-8">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-saffron)] animate-pulse" />
+                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[var(--color-saffron)]">
+                  India&apos;s Living Heritage
+                </span>
               </div>
-              <p className="text-[10px] text-[var(--color-warm-gray)]">
-                All artisans are verified and craft-authenticated
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Ornate divider */}
-      <hr className="divider-ornate" />
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold leading-[1] text-white mb-8">
+                Celebrate India&apos;s <br />
+                <span className="text-[var(--color-saffron)]">Living Craft</span> Traditions
+              </h1>
+
+              <p className="text-xl text-white/70 leading-relaxed mb-10 max-w-xl font-medium">
+                Discover authentic handmade treasures from master craftspeople across India. 
+                Every purchase preserves a legacy and empowers a community.
+              </p>
+
+              <div className="flex flex-wrap gap-5">
+                <Link href="/marketplace" className="btn-primary text-lg !px-10 !py-5 shadow-2xl">
+                  Explore Crafts <ArrowRight size={20} />
+                </Link>
+                <Link href="/artisans" className="btn-secondary !border-white !text-white hover:!bg-white hover:!text-[var(--color-indigo)] text-lg !px-10 !py-5 glass">
+                  Meet the Artisans
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Floating Story Card */}
+        <motion.div 
+          style={{ y: y2 }}
+          className="absolute bottom-20 right-20 z-20 hidden lg:block"
+        >
+          <div className="glass p-8 rounded-3xl w-80 shadow-2xl border-white/30">
+            <div className="w-20 h-20 rounded-full border-4 border-[var(--color-saffron)] overflow-hidden mb-6 -mt-16 mx-auto shadow-xl">
+              <img src="https://images.unsplash.com/photo-1510411274509-382a9db26c7e?w=200" alt="Master Artisan" className="w-full h-full object-cover" />
+            </div>
+            <p className="italic text-[var(--color-charcoal)] text-center leading-relaxed mb-4 font-[family-name:var(--font-heading)]">
+              &ldquo;My grandfather taught me the language of the loom. KarigarAI helps me speak to the world.&rdquo;
+            </p>
+            <div className="text-center">
+              <span className="block font-bold text-[var(--color-terracotta)]">Rajan Ansari</span>
+              <span className="text-[10px] uppercase tracking-wider text-[var(--color-warm-gray)]">Master Silk Weaver • Varanasi</span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Bottom Shade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--color-ivory)] to-transparent z-10" />
+      </section>
 
       {/* ===== FEATURED CRAFTS ===== */}
-      <section className="py-20 px-4 sm:px-6">
+      <section className="py-24 px-4 sm:px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-14"
-          >
-            <motion.span variants={fadeUp} custom={0} className="text-xs font-semibold text-[var(--color-saffron)] uppercase tracking-[0.2em]">
-              Curated Collection
-            </motion.span>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mt-3 mb-4">
-              Featured Crafts
-            </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-[var(--color-warm-gray)] max-w-2xl mx-auto">
-              Handpicked treasures from master artisans across India. Each piece carries a story of heritage and skilled craftsmanship.
-            </motion.p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/marketplace" className="btn-secondary">
-              View All Crafts <ArrowRight size={16} />
+          <header className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div className="max-w-2xl">
+              <span className="text-xs font-bold text-[var(--color-terracotta)] uppercase tracking-[0.4em]">Curated Treasury</span>
+              <h2 className="text-5xl font-bold mt-4 text-[var(--color-charcoal)]">The Masterpiece Gallery</h2>
+              <div className="w-24 h-1.5 bg-[var(--color-terracotta)] rounded-full mt-6" />
+            </div>
+            <Link href="/marketplace" className="group flex items-center gap-2 text-[var(--color-indigo)] font-bold hover:gap-4 transition-all">
+              Discover Full Collection <ArrowRight size={20} />
             </Link>
-          </div>
+          </header>
+
+          <HaveliFrame className="bg-silk mix-blend-multiply p-0 sm:p-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-8 relative z-10 bg-[var(--color-ivory)]/90 backdrop-blur-sm">
+              {products.slice(0, 4).map((product, i) => (
+                <ProductCard key={product.id} product={product} index={i} />
+              ))}
+            </div>
+          </HaveliFrame>
         </div>
       </section>
 
-      {/* ===== CRAFT REGIONS ===== */}
-      <section className="py-20 px-4 sm:px-6 bg-[var(--color-sand-light)]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-14"
-          >
-            <motion.span variants={fadeUp} custom={0} className="text-xs font-semibold text-[var(--color-indigo)] uppercase tracking-[0.2em]">
-              Discover Origins
-            </motion.span>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mt-3 mb-4">
-              Craft Regions of India
-            </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-[var(--color-warm-gray)] max-w-2xl mx-auto">
-              Every region of India has its own craft DNA. Explore the artisan traditions from across the subcontinent.
-            </motion.p>
-          </motion.div>
+      <OrnateDivider />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {craftRegions.map((region, i) => (
-              <motion.div
-                key={region.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link
-                  href={`/regions/${region.id}`}
-                  className="group block relative rounded-2xl overflow-hidden aspect-[4/3] shadow-md"
-                >
-                  <img
-                    src={region.image}
-                    alt={region.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="text-xl font-bold text-white font-[family-name:var(--font-heading)] mb-1">
-                      {region.name}
-                    </h3>
-                    <p className="text-white/70 text-xs mb-2">
-                      {region.state} • {region.artisanCount} artisans
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {region.crafts.slice(0, 3).map((craft) => (
-                        <span key={craft} className="text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white/90 backdrop-blur-sm">
-                          {craft}
-                        </span>
-                      ))}
+      {/* ===== CRAFT REGIONS ===== */}
+      <section className="py-24 px-4 sm:px-6 bg-[var(--color-ivory)] relative border-y-4 border-[var(--color-gold)]">
+        <div className="absolute inset-0 bg-haveli opacity-10 mix-blend-multiply pointer-events-none" />
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20 relative z-10">
+          <div className="lg:w-1/2">
+             <span className="text-xs font-bold text-[var(--color-indigo)] uppercase tracking-[0.4em]">Discovery</span>
+             <h2 className="text-6xl font-bold mt-4 mb-8 text-[var(--color-charcoal)] leading-tight">
+               Every Region has its <br />
+               <span className="text-gradient-saffron">Own Craft DNA</span>
+             </h2>
+             <p className="text-lg text-[var(--color-warm-gray)] leading-relaxed mb-10">
+               India&apos;s artisans are spread across its diverse landscape, each region bringing centuries 
+               of environmental adaptation and cultural heritage to their specific craft. 
+               Explore the vibrant tapestry of Indian crafts through our interactive tapestry.
+             </p>
+             
+             <div className="space-y-6">
+               {['Traditional Weaving Clusters', 'Pottery & Ceramics Hubs', 'Vibrant Block Printing Regions'].map(item => (
+                 <div key={item} className="flex items-center gap-4 group">
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[var(--color-saffron)] shadow-md group-hover:scale-110 transition-transform">
+                      <Sparkles size={16} />
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                    <span className="font-semibold text-[var(--color-charcoal)]">{item}</span>
+                 </div>
+               ))}
+             </div>
+          </div>
+          <div className="lg:w-1/2 w-full">
+            <IndiaCraftMap />
           </div>
         </div>
       </section>
 
       {/* ===== ARTISAN SPOTLIGHT ===== */}
-      <section className="py-20 px-4 sm:px-6">
+      <section className="py-32 px-4 sm:px-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[var(--color-saffron)]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[var(--color-indigo)]/5 rounded-full blur-3xl pointer-events-none" />
+        
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-14"
-          >
-            <motion.span variants={fadeUp} custom={0} className="text-xs font-semibold text-[var(--color-terracotta)] uppercase tracking-[0.2em]">
-              Meet the Makers
-            </motion.span>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mt-3 mb-4">
-              Artisan Spotlight
-            </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-[var(--color-warm-gray)] max-w-2xl mx-auto">
-              Behind every craft is a master artisan. Meet the skilled hands preserving India&apos;s heritage.
-            </motion.p>
-          </motion.div>
+          <header className="text-center mb-20">
+            <span className="text-xs font-bold text-[var(--color-terracotta)] uppercase tracking-[0.4em]">The Living Hands</span>
+            <h2 className="text-6xl font-bold mt-4 mb-6 text-[var(--color-charcoal)]">Artisan Story Corner</h2>
+            <p className="text-lg text-[var(--color-warm-gray)] max-w-2xl mx-auto leading-relaxed">
+              Behind every masterpiece is a lifetime of dedication. Meet the master craftspeople 
+              preserving India&apos;s cultural soul through their workshop traditions.
+            </p>
+          </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <HaveliFrame className="p-0 sm:p-0 bg-transparent">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 p-8 relative z-10 bg-white/80 backdrop-blur-sm">
             {artisans.map((artisan, i) => (
               <motion.div
                 key={artisan.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
                 <Link
                   href={`/artisan/${artisan.id}`}
-                  className="card-craft group block bg-white rounded-2xl overflow-hidden shadow-sm border border-[var(--color-sand)]"
+                  className="card-cultural group block bg-white"
                 >
-                  <div className="relative h-32 overflow-hidden">
+                  <div className="relative h-48 overflow-hidden">
                     <img
                       src={artisan.coverImage}
                       alt=""
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                       <span className="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-saffron)] text-white px-2 py-1 rounded">
+                         Featured Master
+                       </span>
+                    </div>
                   </div>
-                  <div className="relative px-4 pb-4">
-                    <div className="w-16 h-16 rounded-full border-4 border-white overflow-hidden -mt-8 relative shadow-md">
+                  <div className="relative px-6 pb-6">
+                    <div className="w-20 h-20 rounded-2xl border-4 border-white overflow-hidden -mt-10 relative shadow-xl z-10 transition-transform group-hover:-translate-y-1">
                       <img
                         src={artisan.avatar}
                         alt={artisan.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h3 className="font-semibold text-[var(--color-charcoal)] mt-2 group-hover:text-[var(--color-saffron)] transition-colors">
+                    <h3 className="text-xl font-bold text-[var(--color-charcoal)] mt-4 group-hover:text-[var(--color-saffron)] transition-colors font-[family-name:var(--font-heading)]">
                       {artisan.name}
                     </h3>
-                    <p className="text-xs text-[var(--color-warm-gray)] mt-0.5">{artisan.craft}</p>
-                    <div className="flex items-center gap-1 mt-1">
-                      <MapPin size={11} className="text-[var(--color-light-gray)]" />
-                      <span className="text-[11px] text-[var(--color-light-gray)]">{artisan.location}</span>
+                    <p className="text-sm font-bold text-[var(--color-terracotta)] uppercase tracking-wider mt-1">{artisan.craft}</p>
+                    
+                    <div className="flex items-center gap-2 mt-4 text-[var(--color-warm-gray)]">
+                      <MapPin size={14} className="text-[var(--color-light-gray)]" />
+                      <span className="text-xs font-semibold">{artisan.location}</span>
                     </div>
-                    <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[var(--color-sand)]">
-                      <div className="flex items-center gap-1">
-                        <Star size={12} fill="var(--color-gold)" stroke="var(--color-gold)" />
-                        <span className="text-xs font-medium">{artisan.rating}</span>
+
+                    <div className="flex items-center justify-between mt-6 pt-6 border-t border-[var(--color-sand)]">
+                      <div className="flex items-center gap-1.5">
+                        <Star size={14} fill="var(--color-gold)" stroke="var(--color-gold)" />
+                        <span className="text-sm font-bold text-[var(--color-charcoal)]">{artisan.rating}</span>
                       </div>
-                      <span className="text-[11px] text-[var(--color-light-gray)]">
-                        {artisan.productCount} products
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-warm-gray)]">
+                        {artisan.productCount} Collections
                       </span>
                     </div>
                   </div>
@@ -326,44 +244,41 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+          </HaveliFrame>
         </div>
       </section>
 
       {/* ===== PLATFORM FEATURES ===== */}
-      <section className="py-20 px-4 sm:px-6 bg-gradient-to-br from-[var(--color-indigo-dark)] to-[var(--color-indigo)]">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-center mb-14"
-          >
-            <motion.span variants={fadeUp} custom={0} className="text-xs font-semibold text-[var(--color-saffron-light)] uppercase tracking-[0.2em]">
-              Why KarigarAI
-            </motion.span>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mt-3 mb-4 text-white">
-              A Platform Built for Artisans
-            </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-white/60 max-w-2xl mx-auto">
-              We combine the power of technology with the beauty of traditional craftsmanship to create a marketplace that truly serves artisan communities.
-            </motion.p>
-          </motion.div>
+      <section className="py-32 px-4 sm:px-6 bg-[var(--color-charcoal)] relative overflow-hidden">
+        {/* Background Texture Overlay */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')] opacity-10 pointer-events-none" />
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-[var(--color-terracotta)]/20 rounded-full blur-3xl" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <header className="text-center mb-20">
+            <span className="text-xs font-bold text-[var(--color-saffron)] uppercase tracking-[0.4em]">Why KarigarAI</span>
+            <h2 className="text-6xl font-bold mt-4 mb-6 text-white leading-tight">A Studio for Master Artisans</h2>
+            <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
+              We provide the digital loom for traditional craftspeople to weave their success 
+              in the global age, combining high-tech tools with high-touch craftsmanship.
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {platformFeatures.map((feature, i) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group"
+                transition={{ delay: i * 0.1 }}
+                className="p-10 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all duration-500 group"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-saffron)] to-[var(--color-terracotta)] flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-saffron)] to-[var(--color-terracotta)] flex items-center justify-center text-white mb-8 group-hover:scale-110 group-hover:rotate-6 transition-transform shadow-lg shadow-[var(--color-saffron)]/20">
                   {iconMap[feature.icon]}
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-                <p className="text-sm text-white/50 leading-relaxed">{feature.description}</p>
+                <h3 className="text-2xl font-bold text-white mb-4 font-[family-name:var(--font-heading)]">{feature.title}</h3>
+                <p className="text-white/40 leading-relaxed font-medium">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -371,53 +286,66 @@ export default function HomePage() {
       </section>
 
       {/* ===== CULTURAL STORYTELLING ===== */}
-      <section className="py-20 px-4 sm:px-6">
+      <section className="py-40 px-4 sm:px-6 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative"
+              className="relative p-8"
             >
-              <div className="rounded-2xl overflow-hidden shadow-xl aspect-[4/3]">
+              {/* Decorative Frame */}
+              <div className="absolute inset-0 border-[12px] border-[var(--color-sand)] -m-4 rounded-[2.5rem] opacity-50" />
+              <div className="absolute inset-0 border border-[var(--color-gold)]/20 -m-8 rounded-[3rem]" />
+              
+              <div className="rounded-[2rem] overflow-hidden shadow-2xl aspect-square relative z-10 border-4 border-white">
                 <img
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800"
+                  src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1000"
                   alt="Artisan at work"
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-black/40" />
               </div>
-              <div className="absolute -bottom-6 -right-6 glass rounded-xl p-5 shadow-xl max-w-[240px]">
-                <p className="text-sm italic text-[var(--color-charcoal)] font-[family-name:var(--font-heading)]">
-                  &ldquo;KarigarAI gave my craft a global stage. Now my work reaches homes across the world.&rdquo;
-                </p>
-                <p className="text-xs text-[var(--color-warm-gray)] mt-2">— Rajan Ansari, Master Weaver</p>
-              </div>
+              
+              <motion.div 
+                initial={{ x: 20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="absolute -bottom-10 -right-10 glass rounded-3xl p-10 shadow-2xl max-w-[300px] z-20 border-white/50"
+              >
+                 <div className="text-[var(--color-terracotta)] mb-4">
+                    <Sparkles size={32} />
+                 </div>
+                 <p className="text-xl italic text-[var(--color-charcoal)] font-[family-name:var(--font-heading)] leading-snug">
+                  &ldquo;We don&apos;t just sell products; we share the soul of India through our craft.&rdquo;
+                 </p>
+              </motion.div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <span className="text-xs font-semibold text-[var(--color-saffron)] uppercase tracking-[0.2em]">
-                Our Story
-              </span>
-              <h2 className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mt-3 mb-6">
-                Preserving Heritage,<br />
-                <span className="text-gradient-saffron">Empowering Futures</span>
+              <span className="text-xs font-bold text-[var(--color-saffron)] uppercase tracking-[0.4em]">Our Mission</span>
+              <h2 className="text-6xl font-bold mt-6 mb-8 text-[var(--color-charcoal)] leading-tight">
+                Authenticity is <br />
+                <span className="text-gradient-saffron">Our Craft</span>
               </h2>
-              <p className="text-[var(--color-warm-gray)] leading-relaxed mb-6">
-                India is home to the world&apos;s largest and most diverse craft tradition, with over 7 million artisan
-                families. Yet many struggle to reach markets beyond their villages. KarigarAI bridges this gap
-                using thoughtful technology — not to replace tradition, but to amplify it.
+              <p className="text-xl text-[var(--color-warm-gray)] leading-relaxed mb-8 font-medium">
+                In a world of mass production, authenticity is the true luxury. We believe that every 
+                hand-carved wood panel and every hand-woven silk fiber carries the vibration 
+                of the artisan who created it.
               </p>
-              <p className="text-[var(--color-warm-gray)] leading-relaxed mb-8">
-                Our AI tools help artisans present their work professionally, while our marketplace
-                connects them directly with buyers who value authenticity and craftsmanship.
+              <p className="text-lg text-[var(--color-warm-gray)] leading-relaxed mb-10 opacity-70">
+                KarigarAI bridges the gap using thoughtful technology — not to replace tradition, 
+                but to amplify it. Our platform ensures that the original maker is celebrated 
+                globally while being fairly compensated locally.
               </p>
-              <Link href="/about" className="btn-primary">
-                Learn Our Story <ChevronRight size={18} />
+              <Link href="/about" className="btn-primary !px-12 !py-6 text-lg">
+                Our Cultural Journey <ChevronRight size={20} />
               </Link>
             </motion.div>
           </div>
@@ -425,30 +353,37 @@ export default function HomePage() {
       </section>
 
       {/* ===== CTA BANNER ===== */}
-      <section className="py-20 px-4 sm:px-6 bg-[var(--color-sand-light)] relative overflow-hidden">
-        <div className="absolute inset-0 bg-pattern-dots opacity-20" />
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="relative max-w-4xl mx-auto text-center"
-        >
-          <h2 className="text-4xl sm:text-5xl font-bold font-[family-name:var(--font-heading)] mb-6">
-            Are You an <span className="text-gradient-saffron">Artisan</span>?
-          </h2>
-          <p className="text-[var(--color-warm-gray)] text-lg mb-8 max-w-2xl mx-auto">
-            Join thousands of craftspeople who are reaching global markets, growing their businesses,
-            and preserving their craft heritage with KarigarAI.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/join" className="btn-primary text-base px-8 py-4">
-              Start Selling Today <ArrowRight size={18} />
-            </Link>
-            <Link href="/stories" className="btn-secondary text-base px-8 py-4">
-              Success Stories
-            </Link>
-          </div>
-        </motion.div>
+      <section className="py-32 px-4 sm:px-6 relative">
+        <div className="max-w-6xl mx-auto rounded-[3rem] bg-[var(--color-indigo)] relative overflow-hidden p-12 sm:p-24 shadow-2xl">
+          {/* Background Decorative Pattern */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')] opacity-10" />
+          <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-[var(--color-saffron)]/10 rounded-full blur-[100px]" />
+          <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-[var(--color-terracotta)]/10 rounded-full blur-[100px]" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative z-10 text-center"
+          >
+            <h2 className="text-5xl sm:text-7xl font-bold text-white mb-8 font-[family-name:var(--font-heading)] leading-tight">
+               Are You an <br />
+               <span className="text-[var(--color-saffron)] underline decoration-[var(--color-saffron)]/30 underline-offset-8">Indian Master Artisan</span>?
+            </h2>
+            <p className="text-xl text-white/60 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+              Step onto the global stage. Use our AI-powered studio to tell your story, 
+              manage your boutique, and connect with collectors who value your heritage.
+            </p>
+            <div className="flex flex-wrap gap-6 justify-center">
+              <Link href="/join" className="btn-primary !bg-white !text-[var(--color-indigo)] !px-12 !py-6 text-lg shadow-xl hover:!scale-105">
+                Join the Guild <ArrowRight size={22} />
+              </Link>
+              <Link href="/stories" className="btn-secondary !border-white/20 !text-white hover:!bg-white/10 text-lg !px-12 !py-6 glass">
+                View Success Stories
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
     </div>
   );

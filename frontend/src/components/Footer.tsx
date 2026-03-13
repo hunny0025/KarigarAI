@@ -1,94 +1,110 @@
-import Link from 'next/link';
-import { MapPin, Mail, Phone, Instagram, Facebook, Twitter } from 'lucide-react';
+'use client';
 
-const footerLinks = {
-  'Explore': [
-    { label: 'Marketplace', href: '/marketplace' },
-    { label: 'Craft Regions', href: '/regions' },
-    { label: 'Artisan Stories', href: '/artisans' },
-    { label: 'New Arrivals', href: '/marketplace?sort=newest' },
-  ],
-  'For Artisans': [
-    { label: 'Artisan Portal', href: '/dashboard' },
-    { label: 'Sell on KarigarAI', href: '/join' },
-    { label: 'Success Stories', href: '/stories' },
-    { label: 'Resources', href: '/resources' },
-  ],
-  'Support': [
-    { label: 'Help Center', href: '/help' },
-    { label: 'Shipping Info', href: '/shipping' },
-    { label: 'Returns Policy', href: '/returns' },
-    { label: 'Contact Us', href: '/contact' },
-  ],
-};
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { Instagram, Twitter, Facebook, Mail, Phone, MapPin } from 'lucide-react';
+import { RangoliDivider } from './DecorativeElements';
 
 export default function Footer() {
-  return (
-    <footer className="bg-[var(--color-charcoal)] text-[var(--color-sand)]">
-      {/* Ornate divider */}
-      <div className="h-1 bg-gradient-to-r from-[var(--color-saffron)] via-[var(--color-gold)] to-[var(--color-terracotta)]" />
+  const currentYear = new Date().getFullYear();
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--color-saffron)] to-[var(--color-terracotta)] flex items-center justify-center">
-                <span className="text-white font-bold text-lg">K</span>
+  return (
+    <footer className="bg-[var(--color-ivory)] relative pt-20 pb-10 overflow-hidden">
+      {/* Texture and Pattern backgrounds */}
+      <div className="absolute inset-0 bg-paper-texture opacity-30 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-saffron)] via-[var(--color-terracotta)] to-[var(--color-indigo)] opacity-40" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+          {/* Brand Info */}
+          <div className="col-span-1 lg:col-span-1">
+            <Link href="/" className="flex items-center gap-2 mb-6">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-saffron)] to-[var(--color-terracotta)] flex items-center justify-center text-white shadow-md">
+                <span className="text-lg font-bold font-[family-name:var(--font-heading)]">K</span>
               </div>
-              <span className="text-2xl font-bold font-[family-name:var(--font-heading)] text-white">
-                Karigar<span className="text-[var(--color-saffron)]">AI</span>
+              <span className="text-2xl font-bold font-[family-name:var(--font-heading)] text-[var(--color-charcoal)]">
+                Karigar<span className="text-[var(--color-terracotta)]">AI</span>
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-[var(--color-light-gray)] mb-6 max-w-sm">
-              Connecting India&apos;s finest artisans with the world. Every purchase preserves a tradition and empowers a craftsperson.
+            <p className="text-[var(--color-warm-gray)] leading-relaxed mb-6 font-medium">
+              Empowering India&apos;s master artisans by bridging the gap between traditional craft and the global marketplace.
             </p>
-            <div className="flex gap-3">
-              {[Instagram, Facebook, Twitter].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-10 h-10 rounded-full border border-[var(--color-warm-gray)] flex items-center justify-center hover:border-[var(--color-saffron)] hover:text-[var(--color-saffron)] transition-colors"
-                >
+            <div className="flex gap-4">
+              {[Instagram, Twitter, Facebook].map((Icon, i) => (
+                <a key={i} href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center text-[var(--color-charcoal)] hover:bg-[var(--color-terracotta)] hover:text-white transition-all duration-300 shadow-sm">
                   <Icon size={18} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">{title}</h4>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-[var(--color-light-gray)] hover:text-[var(--color-saffron)] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-bold mb-6 text-[var(--color-charcoal)] uppercase tracking-wider">Marketplace</h3>
+            <ul className="space-y-4">
+              {['Textiles & Weaving', 'Pottery & Ceramics', 'Wood Carving', 'Metal Work', 'Jewelry'].map((link) => (
+                <li key={link}>
+                  <Link href={`/marketplace?category=${link}`} className="text-[var(--color-warm-gray)] hover:text-[var(--color-saffron)] transition-colors inline-block">
+                    {link}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-[var(--color-warm-gray)]/30">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-[var(--color-warm-gray)]">
-              © 2026 KarigarAI. Celebrating India&apos;s craft heritage.
-            </p>
-            <div className="flex gap-6 text-xs text-[var(--color-warm-gray)]">
-              <Link href="/privacy" className="hover:text-[var(--color-saffron)] transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-[var(--color-saffron)] transition-colors">Terms</Link>
-              <Link href="/sitemap" className="hover:text-[var(--color-saffron)] transition-colors">Sitemap</Link>
-            </div>
+          {/* Company */}
+          <div>
+            <h3 className="text-lg font-bold mb-6 text-[var(--color-charcoal)] uppercase tracking-wider">KarigarAI</h3>
+            <ul className="space-y-4">
+              {['Our Story', 'How it Works', 'Verified Artisans', 'Craft Regions', 'Impact Reports'].map((link) => (
+                <li key={link}>
+                  <Link href="#" className="text-[var(--color-warm-gray)] hover:text-[var(--color-saffron)] transition-colors inline-block">
+                    {link}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-lg font-bold mb-6 text-[var(--color-charcoal)] uppercase tracking-wider">Contact</h3>
+            <ul className="space-y-4 text-[var(--color-warm-gray)]">
+              <li className="flex items-start gap-3">
+                <MapPin size={20} className="text-[var(--color-terracotta)] mt-1 flex-shrink-0" />
+                <span>Varanasi Craft Cluster, Uttar Pradesh, India</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail size={18} className="text-[var(--color-terracotta)] flex-shrink-0" />
+                <span>support@karigarai.com</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone size={18} className="text-[var(--color-terracotta)] flex-shrink-0" />
+                <span>+91 (0) 542 222 4444</span>
+              </li>
+            </ul>
           </div>
         </div>
+
+        <RangoliDivider className="opacity-20 my-10" />
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-[var(--color-sand)]">
+          <p className="text-sm text-[var(--color-warm-gray)] font-medium">
+            &copy; {currentYear} KarigarAI. Preserving traditions, empowering futures.
+          </p>
+          <div className="flex flex-wrap gap-8">
+            <Link href="#" className="text-xs text-[var(--color-warm-gray)] hover:text-[var(--color-saffron)] uppercase tracking-widest font-bold font-[family-name:var(--font-heading)]">Privacy Policy</Link>
+            <Link href="#" className="text-xs text-[var(--color-warm-gray)] hover:text-[var(--color-saffron)] uppercase tracking-widest font-bold font-[family-name:var(--font-heading)]">Terms of Service</Link>
+            <Link href="#" className="text-xs text-[var(--color-warm-gray)] hover:text-[var(--color-saffron)] uppercase tracking-widest font-bold font-[family-name:var(--font-heading)]">Impact Policy</Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Aesthetic Motifs */}
+      <div className="absolute -bottom-10 -right-10 w-64 h-64 opacity-5 pointer-events-none">
+        <svg viewBox="0 0 100 100" className="w-full h-full fill-[var(--color-terracotta)]">
+          <path d="M50 0 L100 50 L50 100 L0 50 Z" />
+        </svg>
       </div>
     </footer>
   );
